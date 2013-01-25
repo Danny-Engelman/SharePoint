@@ -1,4 +1,4 @@
-//Edit View Fixer 0.1
+//Edit View Fixer 0.2
 //In an opened Edit View pages fixes several settings
 
 var defaultRowLimit='100';
@@ -24,15 +24,24 @@ if(f.indexOf('_gct')!==-1){
 	}
 }
 
-function OpenSection( sectionName , imgName ){
-	secid=document.getElementById( sectionName );
-	ShowHideGroup(secid,document.getElementById(imgName));
+function SwitchSection( sectionName , imgName ){
+	secid=document.getElementById( 'tbody'+sectionName );
+	ShowHideGroup(secid,document.getElementById('img'+imgName));
 	ShowHideGroupLimit( secid );
 }
-//while we're here open the GroupBy section
-OpenSection( 'tbodyViewGroup' , 'imgViewGroup' );
-OpenSection( 'tbodyViewLimit' , 'imgViewLimit' );
-//CollapseGroups
+//while we're here open and close some sections
+//SwitchSection('ViewColums','ViewColumns');
+//SwitchSection('ViewSort','ViewSort');
+//SwitchSection('ViewFilter','ViewFilter');
+//SwitchSection('ViewInlineEdit','ViewInlineEdit');
+//SwitchSection('ViewTabularView','ViewTabularView');
+SwitchSection( 'ViewGroup' , 'ViewGroup' );
+//SwitchSection('ViewTotals','ViewTotals');
+//SwitchSection('ViewStyle','ViewStyle');
+//SwitchSection('Folders','Folders');
+SwitchSection( 'ViewLimit' , 'ViewLimit' );
+SwitchSection('ViewMobile','ViewMobile');
+
 
 //Reset ItemLimit
 
@@ -41,5 +50,13 @@ if (RowLimit.value=='30'){
 	RowLimit.value=defaultRowLimit;
 }
 
+//Report we're done
+var viewnameTR=document.getElementById('ViewName').parentNode.parentNode;
+viewnameTR.style.backgroundColor='red';
+viewnameTR.style.color='white';
+node=document.createElement("td");
+node.appendChild(document.createTextNode("ViewEdit Fixed"));
+viewnameTR.appendChild( node );
+
 //try to scoll down
-//groupBy.scrollIntoView(); 
+//groupBy.scrollIntoView();
