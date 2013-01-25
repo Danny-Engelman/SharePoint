@@ -1,5 +1,15 @@
+// Inline Calculated Column examples
+// Copy-paste code into a Calculated Column
+// SWITCH DATATYPE TO NUMBER!!
+// Save
+
+// If you get SharePoint errors past code line-by line
+// detailed explanation:
+http://www.engelman.nl/sharepointwijzer/2013/01/21/htmlcalculatedcolums/
+
+
 //Excel function for testing limitations of CC
-="="""&REPT("X";B$1)&""""&REPT("&"""&REPT("X";B$1)&"""";$A2-1)
+//="="""&REPT("X";B$1)&""""&REPT("&"""&REPT("X";B$1)&"""";$A2-1)
 
 ################################################################# DaysSince a given (Due)Date, negative values for days in the past
 ="<script type='text/javascript'>"
@@ -32,12 +42,11 @@
 &"}"
 &"</script></div>"
 
-
 ############################################## Progress bar based on field 'Percent'
-="<DIV style=�background-color:LimeGreen;align:left;�>"
-&"<DIV style=�color:white;background-color:red; width:"
+="<DIV style='background-color:LimeGreen;align:left;'>"
+&"<DIV style='color:white;background-color:red; width:"
 &100-[Percent]*100
-&"%;�>"
+&"%;'>"
 &[Percent]*100
 &"%</DIV></DIV>"
 
@@ -71,8 +80,10 @@
 &DAY(DueDate)&"-"&MONTH(DueDate)&"-"&YEAR(DueDate)
 
 
-############################################## Gradient first try
 
+## TESTCODE
+
+############################################## Gradient first STILL WORKING ON IT
 ="<span style='display:inline-block;position:relative;width:60px;border:1px solid;'>"
 &"<script>var P=21;var gnode=null;</script>"
 &"<span id='gradientspan' style='display:inline-block;float:left;height:14px;color:white;background-color:LimeGreen;'>Hello</span>"
@@ -101,9 +112,7 @@
 &"this.previousSibling.innerHTML=P;"
 
 
-
-
-############################################## Edit ECB first try
+############################################## Edit ECB first try UNSUCCESFULL
 ="<script>"
 &"function Custom_AddListMenuItems(m, ctx){"
 &"CAMOpt(m,'Hello World!','','/_layouts/images/LIST.GIF');"
