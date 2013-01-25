@@ -1,5 +1,7 @@
-//Edit View Fixer 0.2
-//In an opened Edit View pages fixes several settings
+// Edit View Fixer 0.3
+// In an opened Edit View pages fixes several settings
+// encapsulate in javascript:{code} to use it as a Bookmarklet on the Favorites Toolbar
+// or paste this in the multi-line F12-Developer Tools Script window
 
 var defaultRowLimit='100';
 var defaultCollapseGroups=1;//1=collapsed,0=expanded
