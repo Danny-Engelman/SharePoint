@@ -1,3 +1,4 @@
+//Excel function for testing limitations of CC
 ="="""&REPT("X";B$1)&""""&REPT("&"""&REPT("X";B$1)&"""";$A2-1)
 
 ################################################################# DaysSince a given (Due)Date, negative values for days in the past
@@ -33,10 +34,10 @@
 
 
 ############################################## Progress bar based on field 'Percent'
-="<DIV style=’background-color:LimeGreen;align:left;’>"
-&"<DIV style=’color:white;background-color:red; width:"
+="<DIV style=ï¿½background-color:LimeGreen;align:left;ï¿½>"
+&"<DIV style=ï¿½color:white;background-color:red; width:"
 &100-[Percent]*100
-&"%;’>"
+&"%;ï¿½>"
 &[Percent]*100
 &"%</DIV></DIV>"
 
