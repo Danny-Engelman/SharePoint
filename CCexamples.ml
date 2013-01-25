@@ -33,12 +33,12 @@
 
 
 ############################################## Progress bar based on field 'Percent'
-=”<DIV style=’background-color:LimeGreen;align:left;’>"
-&"<DIV style=’color:white;background-color:red; width:”
+="<DIV style=’background-color:LimeGreen;align:left;’>"
+&"<DIV style=’color:white;background-color:red; width:"
 &100-[Percent]*100
-&”%;’>"
+&"%;’>"
 &[Percent]*100
-&"%</DIV></DIV>”
+&"%</DIV></DIV>"
 
 ############################################## Highlight TR without DIV Id reference
 ="<img src='/_layouts/images/blank.gif' onload='javascript:{"
