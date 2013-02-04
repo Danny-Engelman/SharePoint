@@ -3,7 +3,7 @@
 // * SWITCH DATATYPE TO NUMBER!!
 // * Save
 
-// If you get SharePoint errors past code line-by line
+// If you get SharePoint errors copy/paste code line-by line
 // detailed explanation: http://http://sharepointwijzer.nl/tech/icc-inline-calculated-columns/
 
 ################################################################# DaysSince a given (Due)Date, negative values for days in the past
