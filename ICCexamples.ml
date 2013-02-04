@@ -1,25 +1,20 @@
-// Inline Calculated Column examples
-// Copy-paste code into a Calculated Column
-// SWITCH DATATYPE TO NUMBER!!
-// Save
+// Inline Calculated Column examples:
+// * Copy-paste code into a Calculated Column
+// * SWITCH DATATYPE TO NUMBER!!
+// * Save
 
 // If you get SharePoint errors past code line-by line
-// detailed explanation:
-http://www.engelman.nl/sharepointwijzer/2013/01/21/htmlcalculatedcolums/
-
-
-//Excel function for testing limitations of CC
-//="="""&REPT("X";B$1)&""""&REPT("&"""&REPT("X";B$1)&"""";$A2-1)
+// detailed explanation: http://http://sharepointwijzer.nl/tech/icc-inline-calculated-columns/
 
 ################################################################# DaysSince a given (Due)Date, negative values for days in the past
 ="<script type='text/javascript'>"
 &"var SPday=new Date();"
 &"SPday.setFullYear( "
-&YEAR(DueDate)
+&YEAR([Due Date])
 &","
-&MONTH(DueDate)-1
+&MONTH([Due Date])-1
 &","
-&DAY(DueDate)
+&DAY([Due Date])
 &" );"
 &"days=Math.round((SPday.getTime()-new Date().getTime())/86400000);"
 &"document.write(days);"
@@ -27,14 +22,14 @@ http://www.engelman.nl/sharepointwijzer/2013/01/21/htmlcalculatedcolums/
 
 ################################################################# DaysSince and highlight past Items
 ="<div id='ThisID"
-&DueDate
+&[Due Date]
 &"'>"
 &"<script type='text/javascript'>"
 &"var TRnode=document.getElementById('ThisID"
-&DueDate
+&[Due Date]
 &"').parentNode.parentNode.parentNode;"
 &"var SPday=new Date();"
-&"SPday.setFullYear( "&YEAR(DueDate)&","&MONTH(DueDate)-1&","&DAY(DueDate)&" );"
+&"SPday.setFullYear( "&YEAR([Due Date])&","&MONTH([Due Date])-1&","&DAY([Due Date])&" );"
 &"days=Math.round((SPday.getTime()-new Date().getTime())/86400000);"
 &"if(days>-4100){"
 	&"TRnode.style.backgroundColor=(days<0)?'Pink':'HoneyDew';"
@@ -45,75 +40,69 @@ http://www.engelman.nl/sharepointwijzer/2013/01/21/htmlcalculatedcolums/
 ############################################## Progress bar based on field 'Percent'
 ="<DIV style='background-color:LimeGreen;align:left;'>"
 &"<DIV style='color:white;background-color:red; width:"
-&100-[Percent]*100
+&100-[% Complete]*100
 &"%;'>"
-&[Percent]*100
+&[% Complete]*100
 &"%</DIV></DIV>"
+
+############################################## Highlight TR with DIV id reference
+=&"<div id='ThisID"
+&[Due Date]
+&"'>"
+&"<script type='text/javascript'>"
+&"var node = document.getElementById('ThisID"
+&[Due Date]
+&"').parentNode.parentNode.parentNode"
+&"var SPday=new Date();"
+&"SPday.setFullYear("&YEAR([Due Date])&","&MONTH([Due Date])-1&","&DAY([Due Date])&");"
+&"days=Math.round((SPday.getTime()-new Date().getTime())/86400000);"
+&"if(days>-4100){"
+&"  node.style.backgroundColor=(days<0)?'Pink':'HoneyDew';"
+&"  document.write(days);"
+&"}"
+&"</script></div>"
 
 ############################################## Highlight TR without DIV Id reference
 ="<img src='/_layouts/images/blank.gif' onload='javascript:{"
 &"TRnode=this.parentNode.parentNode.parentNode;"
 &"var SPday=new Date();"
-&"SPday.setFullYear( "&YEAR(DueDate)&","&MONTH(DueDate)-1&","&DAY(DueDate)&" );"
+&"SPday.setFullYear( "&YEAR([Due Date])&","&MONTH([Due Date])-1&","&DAY([Due Date])&" );"
 &"days=Math.round((SPday.getTime()-new Date().getTime())/86400000);"
 &"if(days>-4100){"
 	&"TRnode.style.backgroundColor=(days<0)?""Pink"":""HoneyDew"";"
 &"}"
 &"}'>"
-&DAY(DueDate)&"-"&MONTH(DueDate)&"-"&YEAR(DueDate)
-
+&DAY([Due Date])&"-"&MONTH([Due Date])&"-"&YEAR([Due Date])
 
 ############################################## Highlight TR without with Text output
-="<span>Hello World!</span>"
+############################################## For colornames see: http://www.uize.com/examples/sortable-color-table.html
+="<span></span>"
 &"<img src='/_layouts/images/blank.gif' onload='javascript:{"
 &"TRnode=this.parentNode.parentNode.parentNode;"
 &"var SPday=new Date();"
-&"SPday.setFullYear( "&YEAR(DueDate)&","&MONTH(DueDate)-1&","&DAY(DueDate)&" );"
+&"SPday.setFullYear( "&YEAR([Due Date])&","&MONTH([Due Date])-1&","&DAY([Due Date])&" );"
 &"days=Math.round((SPday.getTime()-new Date().getTime())/86400000);"
-&"if(days>-4100){"
-	&"TRnode.style.backgroundColor=(days<0)?""Pink"":""HoneyDew"";"
-&"}"
-&"this.previousSibling.innerHTML=days+"" days since "";"
-&"alert( TRnode.iid.split("","")[1] );"
-&")"
+&" if(days>-4100){"
+	&"var Range=[-21,-14,-7,0,7,14,21];"
+	&"var CSS=[""salmon"",""lightCoral"",""Pink"",""lightGoldenrodYellow"",""lightGreen"",""mediumSeaGreen"",""limeGreen""];"
+	&"for (i=0;i<Range.length;i++){Color=CSS[i];if(days<Range[i]){ break;}}"
+	&"TRnode.style.backgroundColor=Color;"
+	&"this.previousSibling.innerHTML=days+"" days ""+((days<0)?""past"":""left"");"
+&" }"
+&"console.log(Color);"
 &"}'>"
-&DAY(DueDate)&"-"&MONTH(DueDate)&"-"&YEAR(DueDate)
 
-
-
-## TESTCODE
-
-############################################## Gradient first STILL WORKING ON IT
-="<span style='display:inline-block;position:relative;width:60px;border:1px solid;'>"
-&"<script>var P=21;var gnode=null;</script>"
-&"<span id='gradientspan' style='display:inline-block;float:left;height:14px;color:white;background-color:LimeGreen;'>Hello</span>"
-&"<img src='/_layouts/images/blank.gif' onload='javascript:{"
-&"console.log(P);"
-&"P="&Percent*100&";"
-&"r=Math.min(510-P*255*2,255);"
-&"g=Math.min(P*255*2,255);"
-&"b=0;"
-&"var C=""#"" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);"
-&"gnode=this.previousSibling;"
-&"gnode.style.width=P+""%"";"
-&"gnode.innerHTML=P+""%"";"
-&"}'>"
-&"</span>"
-&"<script>console.log(P);console.log(gnode);gnode.style.backgroundColor='#F01326';</script>"
-
-&"this.previousSibling.style.backgroundColor=""\"""+C+""\""";"
-&"this.previousSibling.style.backgroundColor=\x22#F01326\x22;"
-
-
-&"var P="&[Percent]&";"
-&"this.previousSibling.style.backgroundColor=rgb(Math.min(510-P*255*2,255),Math.min(P*255*2,255),0);"
-
-&"this.parentNode.style.style.width=P;"
-&"this.previousSibling.innerHTML=P;"
-
-
-############################################## Edit ECB first try UNSUCCESFULL
+############################################## Sum Calculated Column
 ="<script>"
-&"function Custom_AddListMenuItems(m, ctx){"
-&"CAMOpt(m,'Hello World!','','/_layouts/images/LIST.GIF');"
-&"return false;}</script>"
+&"var subtotal="&[Cost]&";"
+&"document.write(subtotal);"
+&"if(ICCtotal==undefined){var ICCtotal=subtotal;} else {ICCtotal=ICCtotal+subtotal;}"
+&"if(prevTotal==undefined){var prevTotal=-1;}"
+&"</script>"
+&"<SPAN style='color:red; font-weight:bold'></SPAN>"
+&"<img src='/_layouts/images/blank.gif' onload='javascript:{"
+&"this.previousSibling.innerHTML=""<HR>""+ICCtotal;"
+&"if(prevTotal.parentNode){prevTotal.parentNode.removeChild(prevTotal);}"
+&"prevTotal=this.previousSibling;"
+&"}'>"
+
