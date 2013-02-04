@@ -2,7 +2,7 @@
 // In an opened Edit View pages fixes several settings
 // encapsulate in javascript:{code} to use it as a Bookmarklet on the Favorites Toolbar
 // or paste this in the multi-line F12-Developer Tools Script window
-
+javascript:(
 var defaultRowLimit='100';
 var defaultCollapseGroups=1;//1=collapsed,0=expanded
 var gct='tp_ContentType';//do not change SP value
@@ -15,7 +15,7 @@ addGroupedCT(2);//add the option to second grouping
 
 //now check if the filename indicates grouping by contenttype: _ctgX
 var f=document.getElementById('onetidIOViewName').value;
-if(f.indexOf('_gct')!==-1){
+if(f.indexOf('_gct')!=-1){
 	X=f.charAt(f.indexOf('_gct')+4);
 	var select = document.getElementById("idGroupField"+X);
 	for (var i = 0; i < select.options.length; i++) {
@@ -62,3 +62,4 @@ viewnameTR.appendChild( node );
 
 //try to scoll down
 //groupBy.scrollIntoView();
+)

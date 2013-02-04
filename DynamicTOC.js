@@ -1,16 +1,13 @@
 //v 0.9 - used on Dutch SharePoint environment, not tested on US/english environments
-//Replace a wikipedia like reference [INDEX] on the page with a Table of Contents of all H1 and H2 in the page
-
-// Requires: JQuery 1.7.1 (minimum)
+//Replace a wikipedia like reference [TOC] on the page with a Table of Contents of all H1 and H2 in the page
 
 // Script will:
 //				add HTML anchors to all H1 and H2 tags
-//				replace anny [INDEX] text in the page with a clickable Table of Contents
+//				replace anny [TOC] text in the page with a clickable Table of Contents
  
-if (jQuery.fn.jquery=="1.7.1"){ //make sure we got a JQuery version that works
+if (jQuery.fn.jquery){ //make sure we got a JQuery version that works
 	$(function(){ //execute after page load
-	   AutoIndexH1H2( '[index]' );
-	   AutoIndexH1H2( '[INDEX]' );
+	   AutoIndexH1H2( '[TOC]' );
 	});
 }
  
