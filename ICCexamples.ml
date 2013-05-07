@@ -129,3 +129,6 @@
 	&"H=H+'</SELECT>';"
 	&"document.write(H);"
 &"</script>"
+
+############################################## KPI icons based on Priorities: (1) High, (2) Medium (3) Low
+="<IMG SRC='/_layouts/images/kpidefault-"&IF(ISNUMBER(FIND("3",Priority)),"0",IF(ISNUMBER(FIND("2",Priority)),"1","2"))&".gif'/>"
