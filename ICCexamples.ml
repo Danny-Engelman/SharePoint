@@ -19,6 +19,30 @@
 &"}"
 &"}"">"
 
+################################################################# Progress bar based on field 'Percent'
+="<DIV style='background-color:LimeGreen;align:left;'>"
+	&"<DIV style='color:white;background-color:red; width:"
+			&100-[% Complete]*100
+		&"%;'>"
+		&[% Complete]*100
+	&"%</DIV>"
+&"</DIV>"
+
+################################################################# SUM a (Calculated) Column
+=[Cost]
+&"<SPAN><HR>total: <span style='color:green; font-weight:bold'>TOTALGOESHERE</span></SPAN>"
+&"<img src='/_layouts/images/blank.gif' onload=""{"
+    &"var T=this.parentNode.parentNode.parentNode.parentNode /* points to the TABLE node*/"
+    &",total="&[Cost]
+        &"+((T.getAttribute('data-icctotal')==null) /* shorthand JS to only add existing totals*/"
+            &"?0"
+            &":parseFloat(T.getAttribute('data-icctotal'))"
+        &");"
+    &"T.setAttribute('data-icctotal',total);"
+    &"this.previousSibling.lastChild.textContent=total;"
+    &"if(typeof window.ICCprev!='undefined'){window.ICCprev.parentNode.removeChild(window.ICCprev)}"
+    &"window.ICCprev=this.previousSibling; /* delete the ICCtotal SPAN from previous Row*/"
+&"}"">"
 
 
 ################################################################# 
@@ -57,15 +81,6 @@ mid 2013 Microsoft started filtering for the word "script"
 		&"document.write(days);"
 	&"}"
 &"</script></div>"
-
-############################################## Progress bar based on field 'Percent'
-="<DIV style='background-color:LimeGreen;align:left;'>"
-	&"<DIV style='color:white;background-color:red; width:"
-			&100-[% Complete]*100
-		&"%;'>"
-		&[% Complete]*100
-	&"%</DIV>"
-&"</DIV>"
 
 ############################################## Highlight TR with DIV id reference
 =&"<div id='ThisID"
