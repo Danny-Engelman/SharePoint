@@ -4,7 +4,23 @@
 // * Save
 
 // If you get SharePoint errors copy/paste code line-by line
-// detailed explanation: http://http://sharepointwijzer.nl/tech/icc-inline-calculated-columns/
+// detailed explanation: http://sharepointwijzer.nl/icc/
+
+################################################################# Give Active Issues a color by Priority
+=[Priority]
+&"<img src='/_layouts/images/blank.gif' onload=""{"
+&"if('" & [Issue Status] &"'==='Active'){"
+&"this.parentNode.parentNode.parentNode.style.backgroundColor=['none','lightpink','bisque','cornsilk']['" & [Priority] & "'.match(/(\d+)/g)];"
+&"}"
+&"}"">"
+
+
+
+################################################################# 
+Code below with script tags only work in older 2010 environments
+mid 2013 Microsoft started filtering for the word "script"
+################################################################# 
+
 
 ################################################################# DaysSince a given (Due)Date, negative values for days in the past
 ="<script type='text/javascript'>"
