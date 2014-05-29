@@ -1,0 +1,20 @@
+="<img src='/_layouts/images/blank.gif' onload=""{"
+	&"var TRnode=this.parentNode.parentNode.parentNode;"
+	&"var SPday=new Date();"
+	&"SPday.setFullYear("
+	&YEAR([Einddatum])
+	&","
+	&MONTH([Einddatum])-1
+	&","
+	&DAY([Einddatum])
+	&");"
+	&"var days=Math.round((SPday.getTime()-new Date().getTime())/86400000);"
+	&"if(days>-4100){"
+		&"var Range=[-21,-14,-7,0,7,14,21];"
+		&"var CSS=['salmon','lightCoral','Pink','lightGoldenrodYellow','lightGreen','mediumSeaGreen','limeGreen'];"
+		&"for (i=0;i<Range.length;i++){Color=CSS[i];if(days<Range[i]){ break;}}"
+		&"TRnode.style.backgroundColor=Color;"
+		&"var text=document.createTextNode(days+' days '+((days<0)?'past':'left'));"
+		&"this.parentNode.appendChild(text,this);"
+	&"}"
+&"}"">"
