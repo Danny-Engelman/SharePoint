@@ -1,6 +1,7 @@
 ="<STYLE>a.icctt:hover {text-decoration:none;}"
 &"a.icctt span {z-index:10;display:none;width:200px;padding:5px;margin:20 0 0 -340;text-align:left;}"
-&"a.icctt:hover span{display:inline;position:absolute;color:#111;border:1px solid #DCA;background:#fffAF0;}.callout {z-index:20;position:absolute;top:130px;border:0;left:-120px;}"
+&"a.icctt:hover span{display:inline;position:absolute;color:#111;border:1px solid #DCA;background:#fffAF0;}"
+&".callout {z-index:20;position:absolute;top:130px;border:0;left:-120px;}"
 &"</STYLE>"
 &"<img src='/_layouts/images/blank.gif' onload=""{"
 &"function ICCmyTR(me){while(me.tagName!='TR'){me=me.parentNode}return(me)}"
