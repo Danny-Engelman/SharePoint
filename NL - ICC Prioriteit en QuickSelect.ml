@@ -2,7 +2,7 @@
 &"var Selected='"&[Prioriteit]&"';"
 &"var Options=['(1) Hoog','(2) Standaard','(3) Laag'];"
 &"var Colors=['none','lightpink','bisque','cornsilk'];"
-&"if('"&Taakstatus&"'==='Niet gestart'){"
+&"if('"&[Taakstatus]&"'==='Niet gestart'){"
 	&"this.parentNode.parentNode.parentNode.style.backgroundColor=Colors[Selected.match(/(\d+)/g)];"
 &"}"
 &"var select = document.createElement('SELECT');"
