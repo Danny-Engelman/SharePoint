@@ -10,7 +10,7 @@ SharePoint Calculated Columns with HTML formatting and JavaScript
 
 ###ICC Basics
 
-```PHP
+```OCaml
 ="<img src='/_layouts/images/blank.gif' onload=""{"
 	&"var myVar=1;"
 &"}"">"
