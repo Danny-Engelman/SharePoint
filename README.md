@@ -1,23 +1,20 @@
-SharePoint
-==========
+#Inline Calculated Columns
+SharePoint Calculated Columns with HTML formatting and JavaScript
 
-SharePoint Client-side scripts &amp; bookmarklets
+##Creating a Calculated Column
 
-see http://e2.nl/icc for details on using Javascript/HTML in Calculated Columns
+* Create a new Calculated Column
+* Set datatype to Number!
+* Paste your ICC code
+* Do not include this column in your ContentTypes
 
-Creating a Calculated Column
-----
-<ul>
-<li>Create a new Calculated Column</li>
-<li>Set datatype to Number!</li>
-<li>Paste your ICC code</li>
-<li>Do not included this column in your ContentTypes</li>
-</ul>
-
-ICC Basics
+###ICC Basics
 
 ```OCaml
 ="<img src='/_layouts/images/blank.gif' onload=""{"
 	&"Plain JavaScript goes here"
 &"}"">"
 ```
+
+To SharePoint this is just a String, but it is parsed as HTML (provided you have set the datatype to Number!)
+Once the (empty gif) IMG has loaded the onload event is triggered and the JavaScript is executed.
