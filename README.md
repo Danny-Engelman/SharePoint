@@ -14,3 +14,10 @@ Creating a Calculated Column
 <li>Do not included this column in your ContentTypes</li>
 </ul>
 
+ICC Basics
+
+```M
+="<img src='/_layouts/images/blank.gif' onload=""{"
+	&"Plain JavaScript goes here"
+&"}"">"
+```
