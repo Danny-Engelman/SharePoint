@@ -16,7 +16,7 @@ Creating a Calculated Column
 
 ICC Basics
 
-```M
+```OCaml
 ="<img src='/_layouts/images/blank.gif' onload=""{"
 	&"Plain JavaScript goes here"
 &"}"">"
