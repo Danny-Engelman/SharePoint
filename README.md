@@ -11,6 +11,22 @@ SharePoint Calculated Columns with HTML formatting and JavaScript
 ###ICC Basics
 
 ```OCaml
+="<B>"
+&[Created]
+&"</B>"
+```
+
+####HTML code
+```OCaml
+="<SELECT onchange=""{alert(this);}"">"
+&" <OPTION value=""(1) Low"" >(1) Low</OPTION>"
+&" <OPTION value=""(2) Normal"" >(2) Normal</OPTION>"
+&" <OPTION value=""(3) High"" >(3) High</OPTION>"
+&"</SELECT>"
+```
+
+####Executing JavaScript
+```OCaml
 ="<img src='/_layouts/images/blank.gif' onload=""{"
 	&"var myVar=1;"
 &"}"">"
