@@ -14,7 +14,7 @@ function processItems(sender, args) {
         var id=currentItem.get_id();
         var fileName=currentItem.get_item('FileLeafRef');
         var title=currentItem.get_item("Title");
-        if(title){
+        if(!title){
             var listItem=targetList.getItemById(id);
             var newTitle=fileName;
             console && console.log('Renaming Title to:',newTitle);
