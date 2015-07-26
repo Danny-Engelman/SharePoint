@@ -1,26 +1,25 @@
 //use http://mrcoles.com/bookmarklet/ to create your own bookmarklet
 
 var ctx = new SP.ClientContext.get_current();
-var targetList = ctx.get_web().get_lists().getById(SP.ListOperation.Selection.getSelectedList());
+var listGuid = SP.ListOperation.Selection.getSelectedList();
+var list = ctx.get_web().get_lists().getById(listGuid);
 var query = SP.CamlQuery.createAllItemsQuery();
-var allItems = targetList.getItems(query);
-ctx.load(allItems);
-ctx.executeQueryAsync( processItems );
+var items = list.getItems(query);
+ctx.load(items);
+ctx.executeQueryAsync(processItems);
 
 function processItems(sender, args) {
-    var listEnumerator = allItems.getEnumerator();
-    while (listEnumerator.moveNext()) {
-        var currentItem = listEnumerator.get_current();
-        var id=currentItem.get_id();
-        var fileName=currentItem.get_item('FileLeafRef');
-        var title=currentItem.get_item("Title");
-        if(!title){
-            var listItem=targetList.getItemById(id);
-            var newTitle=fileName;
-            console && console.log('Renaming Title to:',newTitle);
-            listItem.set_item('Title',newTitle);
-            listItem.update();
-            ctx.executeQueryAsync();
-        }
-    }
+	var listEnumerator = items.getEnumerator();
+	while (listEnumerator.moveNext()) {
+		var item = listEnumerator.get_current();
+		var id = item.get_id();
+		var title = item.get_item('Title');
+		var fileName = item.get_item('FileLeafRef');
+		if (!title) { //title is empty
+			console && console.log('Renaming Title to:', fileName);
+			item.set_item('Title', fileName);
+			item.update();
+			ctx.executeQueryAsync();
+		}
+	}
 }
