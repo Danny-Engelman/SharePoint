@@ -1,0 +1,269 @@
+/* default alternating row color*/
+
+.ms-alternating {
+    background-color: #f2f2f2;
+}
+
+/*float the webpart properties panel
+coded: http://www.codeproject.com/Tips/715945/SharePoint-Web-Part-ToolPane-Tweak
+*/
+
+#MSOTlPn_Tbl {
+    position: fixed;
+    left: 5px;
+    top: 160px;
+}
+
+/*reposition the save/cancel buttons*/
+
+/* Group edit*/
+
+#ctl00_PlaceHolderMain_ctl06_RptControls_btnOK, #ctl00_PlaceHolderMain_ctl06_RptControls_BtnDelete,#ctl00_PlaceHolderMain_ctl06_BtnCancel,#onetidSaveItemtop, #onetidCanceltop, #onetidSaveItem, #onetidCancel, #onetidCancelItem,#onetidDeleteItemtop, #onetidDeleteItem {
+    position: fixed;
+    background-color: beige;
+    opacity: .4;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+#onetidSaveItemtop, #onetidCanceltop,#onetidDeleteItemtop {
+    top: 20vh;
+}
+
+/*group edit*/
+
+#ctl00_PlaceHolderMain_ctl06_RptControls_btnOK, #onetidSaveItemtop, #onetidSaveItem {
+    left: 40vw;
+}
+
+/*Group edit*/
+
+#ctl00_PlaceHolderMain_ctl06_BtnCancel, #onetidCanceltop, #onetidCancel,#onetidCancelItem {
+    left: 50vw;
+}
+
+#ctl00_PlaceHolderMain_ctl06_RptControls_BtnDelete, #onetidDeleteItemtop,#onetidDeleteItem {
+    left: 60vw;
+}
+
+/*group edit*/
+
+#ctl00_PlaceHolderMain_ctl06_RptControls_btnOK, #ctl00_PlaceHolderMain_ctl06_BtnCancel,#ctl00_PlaceHolderMain_ctl06_RptControls_BtnDelete, #onetidSaveItem, #onetidCancel,#onetidDeleteItem, #onetidCancelItem {
+    bottom: 10vh;
+}
+
+#ctl00_PlaceHolderMain_ctl06_RptControls_btnOK:hover, #ctl00_PlaceHolderMain_ctl06_RptControls_BtnDelete:hover,#ctl00_PlaceHolderMain_ctl06_BtnCancel:hover, #onetidSaveItemtop:hover , #onetidCanceltop:hover, #onetidSaveItem:hover, #onetidCancel:hover, #onetidCancelItem:hover, #onetidDeleteItemtop:hover, #onetidDeleteItem:hover {
+    opacity: 1;
+    cursor: pointer;
+    color: black;
+    border: 1px solid black;
+}
+
+/*show section icons on site settings page*/
+
+.ms-siteSettings-root .ms-linksection-iconCell {
+    display: block;
+}
+
+/* Calculated Formula editor*/
+
+#onetidIODefTextValue1 {
+    width: 40vw;
+    height: 270px;
+    background-color: beige;
+}
+
+#L_onetidTypeNumber1::after {
+    color: green;
+    content: ' <- will output textstring as HTML+JavaScript';
+}
+
+/*focus on important site-settings options*/
+
+#ctl00_PlaceHolderMain_Customization_RptControls_QuickLaunch, #ctl00_PlaceHolderMain_UsersAndPermissions_RptControls_PeopleAndGroups, #ctl00_PlaceHolderMain_UsersAndPermissions_RptControls_User, #ctl00_PlaceHolderMain_Galleries_RptControls_ManageField, #ctl00_PlaceHolderMain_Galleries_RptControls_ManageCType {
+    background-color: beige;
+    font-weight: bold;
+    margin: 3px -2px;
+    display: block;
+}
+
+/* Groups settings*/
+
+input[type='radio'][value*="Rad"] {
+    zoom: 2;
+    cursor: pointer;
+}
+
+input[type='text'] {
+}
+
+textarea[class*='ms-input'] {
+    background-color: beige;
+    width: 30vw;
+}
+
+/*warning groupsettings*/
+
+#ctl00_PlaceHolderMain_ctl02_ctl02_RadEditMembershipGroupMembers:checked + label {
+    background-color: lightcoral;
+    font-weight: bold;
+    padding: 2px;
+}
+
+/* List View Page*/
+
+/*ViewSelector*/
+
+.ms-csrlistview-controldiv {
+    font-size: 110%;
+}
+
+.ms-pivotControl-surfacedOpt {
+    opacity: .8;
+}
+
+.ms-pivotControl-surfacedOpt:hover, .ms-pivotControl-surfacedOpt-selected {
+    background-color: #f2f2f1;
+    color: black;
+    opacity: 1;
+}
+
+.ms-pivotControl-surfacedOpt-selected {
+    font-weight: bold;
+    padding: 0 15px;
+}
+
+.ms-pivotControl-overflowDot {
+    zoom: 1.2;
+    margin: 0 15px;
+    border: 1px solid transparent;
+}
+
+.ms-pivotControl-overflowDot:hover {
+    border: 1px solid grey;
+    background-color: #f2f2f1;
+}
+
+/*Alerts*/
+
+table[class='ms-propertysheet'] {
+    max-width: 1024px;
+}
+
+/* item link in listview*/
+
+.ms-list-itemLink {
+    zoom: 1;
+    xbackground-color: red;
+}
+
+/* Buttons above New/Edit/Disp form*/
+
+#listFormToolBarTop {
+    display: block;
+}
+
+/*List Settings*/
+
+/*hide img claiming too much spaces*/
+
+#_spFocusHere img {
+    background-color: pink;
+    display: none;
+}
+
+/**/
+
+#_spFocusHere table table table table tbody tr:nth-child(odd) {
+    background-color: #f2f2f2;
+}
+
+.ms-linksectionitemdescription {
+    font-size: 1.1em;
+    color: red;
+    padding-top: 0px;
+    padding-bottom: 2px;
+}
+
+/*Highlight important links*/
+
+a[href*='DeleteList'] {
+    opacity: .4;
+}
+
+a[href*='advsetng.aspx'], a[href*='LstSetng.aspx'], a[href*='user.aspx'] {
+    background-color: orange;
+    padding-left: 5px;
+    color: black;
+}
+
+/* indicate system fields*/
+
+a[href$='Field=Title']::before, a[href$='Field=Priority']::before, a[href$='Field=Status']::before, a[href$='Field=Author']::before, a[href$='Field=Editor']::before, a[href$='Field=Created']::before, a[href$='Field=Modified']::before, a[href$='Field=Comment']::before {
+    content: '*';
+}
+
+a[href$='Field=Title']::after {
+    content: ' ► Title';
+}
+
+a[href$='Field=Priority']::after {
+    content: ' ► Priority';
+}
+
+a[href$='Field=Status']::after {
+    content: ' ► Status' ;
+}
+
+a[href$='Field=Editor']::after {
+    content: ' ► Editor';
+}
+
+a[href$='Field=Author']::after {
+    content: ' ► Author';
+}
+
+a[href^='FldEdit'][href*='Field='], a[href*='View='] {
+    background-color: pink;
+}
+
+a[href^='FldEdit'][href*='Field=']:hover {
+    text-decoration: none;
+    position: relative;
+    color: black;
+    background-color: lightblue;
+}
+
+a[href^='FldEdit'][href*='Field=']:hover:after {
+    content: attr(href);
+    padding: 4px 0px 4px 8px;
+    position: absolute;
+    background-color: orange;
+    right: 0;
+    bottom: 1.5em;
+    white-space: nowrap;
+    z-index: 20px;
+}
+
+/*ContentTypes*/
+
+a[href*='ctype=0x010010'] {
+    xbackground-color: pink
+    ;
+}
+
+/* set max width of settings tables*/
+
+#mainContent + table {
+    xbackground-color: pink;
+    max-width: 1024px;
+}
+
+/*alternating row colors*/
+
+/*, .ms-listviewtable tbody tr:nth-child(odd)*/
+
+#mainContent + table table tbody tr:nth-child(odd), #spgridcontainer_WPQ2_leftpane_mainTable tbody tr:nth-child(even), .ms-linksection-column tr li:nth-child(odd), #ctl00_PlaceHolderMain_rptrUsers tbody tr:nth-child(even), #tbodyViewColumns tbody tr:nth-child(even) {
+    background-color: rgba(100, 100, 100, .1);
+}
+
