@@ -1,0 +1,251 @@
+#Upload all files from a local fileshare to a SharePoint Library
+#Set permissions of all files in a library to the user matched with the EmployeeID (from Active Directory)
+#files:
+# report1_8791.pdf
+# report2_1236.pdf
+# report2_8791.pdf
+# Last part of the filename is the EmployeeID which (should) match with the EmployeeID in the ActiveDirectory
+
+#For testing purpose I added LookupTables for situations where the AD can't be used
+$defaultLookupType=1 #1=AD, 2=LookupTable, 3=Array 
+if ( $defaultLookupType -eq 1 ){ Import-Module ActiveDirectory }
+
+#testing export all AD userinfo
+#foreach-object {get-aduser -identity $_.ID -properties cn,employeeid} | select cn,employeeid | Export-csv file1.csv
+
+if ( (Get-PSSnapin -Name Microsoft.SharePoint.PowerShell -ErrorAction SilentlyContinue) -eq $null ){
+	Add-PsSnapin Microsoft.SharePoint.PowerShell
+}
+function Notice{
+	param( $txt , $color )
+	$logfile="ProcessSecuredFiles.txt"
+	$logfile=$false
+	if ($logfile) {
+	} else {
+		Write-Host $txt -foregroundcolor $color
+	}
+}
+## Copy all files from a localPath to a SharePoint Document Library
+##
+function TransferFilesToSPLibrary{
+	param( $localPath , $webUrl , $doclibName )
+	$spWeb 	= Get-SPWeb $webUrl
+	$spList = $spWeb.Lists[ $doclibName ]
+	$purge		  = $false #purge library
+	$deletesource = $true #delete file after transfer
+	if ($purge){
+		#Delete ALL files from SharePoint library first
+		$spItems = $spList.Items
+		$DocCount = $spItems.count
+		Notice "Deleting $DocCount Documents from $webUrl\$doclibName" white
+		for ($i=$DocCount - 1; $i -ne 0; $i--) { 
+			$spItems[$i].Delete(); 
+			Write-Host "." -nonewline
+		}
+	}
+	$files = ([System.IO.DirectoryInfo] (Get-Item $localPath)).GetFiles()
+	$DocCount = $files.count
+	Notice "Copying $DocCount Documents from $localPath" white
+	Notice " to: $webUrl\$doclibName" white
+	ForEach( $file in $files ) {
+		$fileStream = ([System.IO.FileInfo] (Get-Item $file.FullName)).OpenRead()
+		$spFolder = $spList.RootFolder
+		write-host "Copying file " $file.Name " to " $spFolder.ServerRelativeUrl "..."
+		$spFile = $spFolder.Files.Add($spFolder.Url + "/" + $file.Name, [System.IO.Stream]$fileStream, $true)
+		Write-Host "." -nonewline
+		$fileStream.Close();
+		if ($deletesource) { 
+			Remove-Item $file.FullName
+		}
+	}
+	$spWeb.Dispose()
+}
+
+## Find the User with this EmployeeID
+##
+function FindUsernameWithEmployeeID{
+	param( $EmployeeID )
+	#$EmployeeID="055479000"
+	$currentLookupType=$defaultLookupType
+	$foundUser=$null
+	do { #look untill we find one or used all lookup method 
+		switch( $currentLookupType )
+		{
+			1 { #look in multiple Active Directory Servers
+				$Servers=@( "Server1" , "Server2" )
+				$S=0
+				do {
+					$ServerName=$Servers[ $S ]
+					$S++
+					$foundUser = Get-ADUser -Filter { EmployeeID -eq $EmployeeID } -properties EmployeeID -Server $ServerName
+				} while ( $S -lt $Servers.Length -and $foundUser -eq $null)
+				if ($foundUser -ne $null) {
+					$AccountName = $foundUser.SamAccountName
+					$foundUser = "$ServerName\$AccountName"
+				}
+			}
+			2 { # Fallback look in SharePoint table
+				# 034474000 janedoe
+				# 055479000 johndoe
+			}
+			3 { # Fallback look in array or someplace else
+				# $foundUser = "Server1\Admin"
+			}
+			default { break }
+		}
+		$currentLookupType++
+	} while ($foundUser -eq $null -and $currentLookupType -ne 4)
+	$foundUser
+}
+
+## EmployeeID is encoded in the FileName
+## 2 = in the last 9 characters
+function ExtractEmployeeIDfromFilename{
+	param ( $FileName )
+	$Name = [System.IO.Path]::GetFileNameWithoutExtension($FileName)
+	$EmployeeID = $false
+	$Type=2
+	switch ($Type) {
+		1 { #EmployeeID after last _
+			$A = $Name.Split("_") 
+			$EmployeeID = $A[ $A.count-1 ] 
+		}
+		2 { #Extract 9 Characters from the End of the filename
+			$IDlen=9
+			$EmployeeID=$Name.Substring( $Name.Length-$IDlen , $IDlen )
+		}
+	}
+	$EmployeeID
+}
+
+## Secure all files in the specified SharePoint Library by either 
+##	settings Item Level Security on the Library; and thus Users will only see Items Created by them (this script will change the Created By Field)
+##  or set Custom permission on each Lirary Item
+function SecureLibraryFiles{
+	param( $webUrl , $listName )
+	$ILS=$true # Use additional Item Level Security settings for this list; note: for Document Libraries this is NOT available in the UI!
+	$UserRole   = "Read" #user gets this role for his files "Read" for english
+	$StatusField="Title" #columname in Library for Status indicator
+	$spWeb   = Get-SPWeb $webUrl
+	$spList  = $spWeb.Lists[ $listName ]
+	$spItems = $spList.Items
+	$DocCount = $spItems.count
+	Notice "Processing $DocCount files in $webUrl/$listName" white
+	Write-Host $spList.ReadSecurity
+	Write-Host $spList.WriteSecurity
+	if ($ILS){ 
+		$spList.ReadSecurity=2 # 1=read all items, 2=read items created by user
+		$spList.WriteSecurity=4 # 1=Create and edit All items, 2=Create items and edit items that were created by the user, 4=None
+		$spList.Update()
+	} else {
+	
+	}
+	foreach ( $spItem in $spItems ){
+		$goedgekeurd=$false
+
+		if ($ILS){ 
+		} else { #each item gets unique permissions when NOT using SharePoint security by Created By name
+			$spItem.ResetRoleInheritance()
+			$spItem.BreakRoleInheritance( $false )
+			# give AdminGroup access to: _IR (Intranet Redactie)
+			$spGroup = $spWeb.SiteGroups[ "_IR" ]
+
+			$spRoleAssignment = New-Object Microsoft.SharePoint.SPRoleAssignment( $spGroup )
+			$spRole = $spWeb.RoleDefinitions[ "Volledig beheer" ] #existing SharePoint profile!
+			$spRoleAssignment.RoleDefinitionBindings.Add( $spRole )
+			$spItem.RoleAssignments.Add( $spRoleAssignment ) 		# Add new permission
+
+			# give AdminGroup access to: Afd. Financiele Zaken en Control Leden
+			$spGroup = $spWeb.SiteGroups[ "Afd. Financiele Zaken en Control Leden" ]
+
+			$spRoleAssignment = New-Object Microsoft.SharePoint.SPRoleAssignment( $spGroup )
+			$spRole = $spWeb.RoleDefinitions[ "Volledig beheer" ]
+			$spRoleAssignment.RoleDefinitionBindings.Add( $spRole )
+			$spItem.RoleAssignments.Add( $spRoleAssignment ) 		# Add new permission
+
+			}
+		
+		$FileName=$spItem.Name
+		$FileExt=$FileName.Split('.')
+		$FileExt=$FileExt[1]
+		#find the correct user for this item
+		$EmployeeID = ExtractEmployeeIDfromFilename( $FileName )
+		if ($EmployeeID) {
+			$UserName = FindUsernameWithEmployeeID( $EmployeeID ) # including Domain!!! Server1\aicoh
+
+			if ($UserName -ne $null){
+				try {
+					#$spUser = $spWeb.AllUsers[ $UserName ]
+					$spUser = $spWeb.EnsureUser( $UserName )
+				}
+				catch {
+					Notice "SharePoint EnsureUser failed: $UserName" red
+					$spUser = $false
+				}
+				finally {
+					if ($spUser){
+
+						#change Created By and Modified by fields
+						if ($ILS){
+							$spFieldUserValue = New-Object Microsoft.SharePoint.SPFieldUserValue( $spWeb , $spUser.ID , $spUser.Name )
+							$spItem["Author"]=$spFieldUserValue #set Created By field to user
+							$spItem["Editor"]=$spFieldUserValue #set Modified By field to user
+							Notice "Updated Author/Editor: $spUser : $FileName"  "Green" 
+						} else {
+							#change Item permissions for this user
+
+							$spRoleAssignment = New-Object Microsoft.SharePoint.SPRoleAssignment( $spUser )
+							$spRole = $spWeb.RoleDefinitions[ $UserRole]
+							$spRoleAssignment.RoleDefinitionBindings.Add( $spRole )
+							$spItem.RoleAssignments.Add( $spRoleAssignment )
+							
+							Notice "Updated Permissions: $spUser : $FileName"  "Green" 
+						}
+						$spItem[ $StatusField ]="Updated"
+						$goedgekeurd=$true
+						
+						$spItem[ "DocSoort" ] = $FileExt
+						$spItem[ $StatusField ]=""
+						
+						#Remove Limited Access (Beperkte Toegang) from parent site
+						#NO!!! Also removes
+						#$spWeb.SiteUsers.Remove( $spUser )
+						
+					} else { #User not defined in SharePoint
+						Notice "User not defined in SharePoint: $UserName"  "Red" 
+						$spItem[ $StatusField ]="User not defined in SharePoint: $UserName"
+					}
+				}
+			} else { #No user found
+				Notice "User with EmployeeID not found: $EmployeeID"  "Red"
+				$spItem[ $StatusField ]="EmployeeID Not found"
+			}
+		} else { #no EmployeeID in filename
+			Notice "No EmployeeID in $FileName"  "Red" 
+			$spItem[ $StatusField ]="Missing EmployeeID"
+		}
+		if ($goedgekeurd){
+			$spItem.Update()
+			$spItem.ModerationInformation.Status = "Approved" 		#$spItem[ "_ModerationStatus" ] = 0 # set Document status to Approved
+		}
+		$spItem.Update()
+	}
+	$spWeb.Dispose();
+}
+
+##
+##
+function UploadDirectoryAndSecureFiles{
+	param( $localPath , $webUrl , $doclibName )
+	TransferFilesToSPLibrary $localPath  $webUrl  $doclibName #Copy files from local filesystem to SharePoint Library
+#	SecureLibraryFiles $webUrl  $doclibName #Process all files in SharePoint Library, set security by EmployeeID and approve secured Items to make them visible to end users
+}
+
+#SET CORRENT HOSTNAME!!!
+$hostname = "intraCompany.nl"
+$from = "\\company.nl\data$\Fizpers\Kaarten Pivver"
+$sharepointdir =  "http://$hostname/dep/fzc"
+$documentlibrary = "Personal Leave cards"
+UploadDirectoryAndSecureFiles $from $sharepointdir $documentlibrary
+
+exit
